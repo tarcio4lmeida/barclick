@@ -17,16 +17,15 @@ public interface PedidoMapper {
         pedidoDTO.setMesaId(pedido.getMesa().getId());
         pedidoDTO.setStatus(pedido.getStatus().toString());
         pedidoDTO.setDataCriacao(pedido.getData());
+        pedidoDTO.setTotal(pedido.getTotal());
+
         List<ItemPedido> itens = pedido.getItens();
-        double total = 0.0;
         for (ItemPedido item: itens){
             ItemPedidoDTO itemPedidoDTO = new ItemPedidoDTO();
             itemPedidoDTO.setProdutoId(item.getProduto().getId());
             itemPedidoDTO.setQuantidade(item.getQuantidade());
             pedidoDTO.getItens().add(itemPedidoDTO);
-            total += item.getPreco() * item.getQuantidade();
         }
-        pedidoDTO.setTotal(total);
         return pedidoDTO;
     }
 

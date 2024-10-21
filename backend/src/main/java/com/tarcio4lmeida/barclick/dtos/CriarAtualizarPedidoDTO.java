@@ -2,7 +2,7 @@ package com.tarcio4lmeida.barclick.dtos;
 
 import java.util.List;
 
-public class CriarPedidoDTO {
+public class CriarAtualizarPedidoDTO {
 
     private Long mesaId;
     private List<ItemPedidoDTO> itens;

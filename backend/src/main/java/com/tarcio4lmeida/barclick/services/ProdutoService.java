@@ -1,7 +1,6 @@
 package com.tarcio4lmeida.barclick.services;
 
 
-import com.tarcio4lmeida.barclick.dtos.CategoriaDTO;
 import com.tarcio4lmeida.barclick.dtos.ProdutoDTO;
 import com.tarcio4lmeida.barclick.entities.Categoria;
 import com.tarcio4lmeida.barclick.entities.Produto;
@@ -10,9 +9,7 @@ import com.tarcio4lmeida.barclick.repositories.CategoriaRepository;
 import com.tarcio4lmeida.barclick.repositories.ProdutoRepository;
 import com.tarcio4lmeida.barclick.services.exceptions.DatabaseException;
 import com.tarcio4lmeida.barclick.services.exceptions.ResourceNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -20,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -32,7 +28,6 @@ public class ProdutoService {
 
     @Transactional(readOnly = true)
     public Page<ProdutoDTO> findAllPaged(Long categoriaId, String nome, Pageable pageable) {
-        // Verifica se há categorias a serem filtradas
         if (categoriaId == 0) {
             return repository.findByNomeContainingIgnoreCase(nome, pageable)
                     .map(produtoMapper::toDto);

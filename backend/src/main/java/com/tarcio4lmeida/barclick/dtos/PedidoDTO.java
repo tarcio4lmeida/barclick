@@ -1,7 +1,7 @@
 package com.tarcio4lmeida.barclick.dtos;
 
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +10,7 @@ public class PedidoDTO {
     private Long id;
     private Long mesaId;
     private List<ItemPedidoDTO> itens = new ArrayList<>();
-    private Double total;
+    private BigDecimal total;
     private String status;
     private Instant dataCriacao;
 
@@ -41,11 +41,11 @@ public class PedidoDTO {
         this.itens = itens;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 

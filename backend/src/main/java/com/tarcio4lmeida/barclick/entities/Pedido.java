@@ -2,6 +2,7 @@ package com.tarcio4lmeida.barclick.entities;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class Pedido {
     @JoinColumn(name = "mesa_id")
     private Mesa mesa;
 
-    private Double total;
+    private BigDecimal total;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens = new ArrayList<>();
@@ -63,11 +64,11 @@ public class Pedido {
         return itens;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 }
