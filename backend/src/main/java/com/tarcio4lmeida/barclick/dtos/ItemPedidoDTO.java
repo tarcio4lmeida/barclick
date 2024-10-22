@@ -2,18 +2,19 @@ package com.tarcio4lmeida.barclick.dtos;
 
 public class ItemPedidoDTO {
 
-    private Long produtoId;
     private Integer quantidade;
+
+    private ProdutoDTO produto;
 
     public ItemPedidoDTO() {
     }
 
-    public Long getProdutoId() {
-        return produtoId;
+    public ProdutoDTO getProduto() {
+        return produto;
     }
 
-    public void setProdutoId(Long produtoId) {
-        this.produtoId = produtoId;
+    public void setProduto(ProdutoDTO produto) {
+        this.produto = produto;
     }
 
     public Integer getQuantidade() {

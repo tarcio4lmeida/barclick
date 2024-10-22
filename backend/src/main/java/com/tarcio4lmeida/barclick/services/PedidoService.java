@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,15 +49,15 @@ public class PedidoService {
     @Transactional
     public PedidoDTO update(Long id, CriarAtualizarPedidoDTO dto) {
         try {
-            Pedido pedido = pedidoRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado: " + id));
+            Pedido pedido = pedidoRepository.getReferenceById(id);
 
             Mesa mesaAtualizada = mesaRepository.getReferenceById(dto.getMesaId());
             pedido.setMesa(mesaAtualizada);
 
-            pedido.getItens().clear();
+            atualizarItensDoPedido(pedido, dto.getItens());
 
-            BigDecimal total = convertItemsDtoToEntitiesAndGetTotal(dto, pedido);
+            BigDecimal total = calcularTotal(pedido);
+
             pedido.setTotal(total);
             Pedido pedidoAtualizado = pedidoRepository.save(pedido);
 
@@ -65,7 +67,40 @@ public class PedidoService {
             throw new ResourceNotFoundException("Pedido não encontrado para o id " + id);
         }
     }
+    private void atualizarItensDoPedido(Pedido pedido, List<ItemPedidoDTO> novosItens) {
+        // Limpar a lista de itens sem removê-los do banco diretamente
+        List<ItemPedido> itensAtuais = pedido.getItens();
 
+        // Remover itens que não estão mais no pedido
+        itensAtuais.removeIf(item ->
+                novosItens.stream().noneMatch(novo -> novo.getProduto().getId().equals(item.getProduto().getId()))
+        );
+
+        // Adicionar ou atualizar itens
+        for (ItemPedidoDTO itemDto : novosItens) {
+            Produto produto = produtoRepository.getReferenceById(itemDto.getProduto().getId());
+
+            ItemPedido itemPedido = itensAtuais.stream()
+                    .filter(item -> item.getProduto().getId().equals(produto.getId()))
+                    .findFirst()
+                    .orElseGet(() -> {
+                        ItemPedido novoItem = new ItemPedido();
+                        novoItem.setProduto(produto);
+                        novoItem.setPedido(pedido);
+                        pedido.getItens().add(novoItem);
+                        return novoItem;
+                    });
+
+            itemPedido.setQuantidade(itemDto.getQuantidade());
+            itemPedido.setPreco(produto.getPrice());
+        }
+    }
+
+    private BigDecimal calcularTotal(Pedido pedido) {
+        return pedido.getItens().stream()
+                .map(item -> item.getPreco().multiply(BigDecimal.valueOf(item.getQuantidade())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
     public void delete(Long id) {
         try {
             pedidoRepository.deleteById(id);
@@ -76,19 +111,25 @@ public class PedidoService {
         }
 
     }
+    @Transactional(readOnly = true)
+    public List<PedidoDTO> findNonFinalizedPedidosByMesa(Long mesaId) {
+        List<Pedido> pedidos = pedidoRepository.findByMesaAndStatusNotFinalizado(mesaId);
+        return pedidos.stream().map(pedidoMapper::toDto).collect(Collectors.toList());
+    }
+
     private BigDecimal convertItemsDtoToEntitiesAndGetTotal(CriarAtualizarPedidoDTO dto, Pedido pedido) {
-        double total = 0.0;
+        BigDecimal total = BigDecimal.ZERO;  // Inicia o total em 0
         for (ItemPedidoDTO itemDto : dto.getItens()) {
-            Produto produto = produtoRepository.getReferenceById(itemDto.getProdutoId());
+            Produto produto = produtoRepository.getReferenceById(itemDto.getProduto().getId());
 
             ItemPedido itemPedido = new ItemPedido();
             itemPedido.setProduto(produto);
             itemPedido.setQuantidade(itemDto.getQuantidade());
             itemPedido.setPreco(produto.getPrice());
-
+            itemPedido.setPedido(pedido);
             pedido.getItens().add(itemPedido);
-            total += produto.getPrice() * itemDto.getQuantidade();
+            total = total.add(produto.getPrice().multiply(BigDecimal.valueOf(itemDto.getQuantidade())));
         }
-        return new BigDecimal(total).setScale(2, RoundingMode.UP);
+        return total.setScale(2, RoundingMode.UP);
     }
 }

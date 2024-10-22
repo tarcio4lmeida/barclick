@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class ProdutoDTO implements Serializable{
 	private String descricao;
 	
 	@Positive(message="Preço deve ser um valor positivo")
-	private Double price;
+	private BigDecimal price;
 	
 	private String imgUrl;
 	

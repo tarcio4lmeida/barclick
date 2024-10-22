@@ -3,6 +3,7 @@ package com.tarcio4lmeida.barclick.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
@@ -18,7 +19,7 @@ public class Produto implements Serializable {
     private String nome;
     @Column(columnDefinition = "TEXT")
     private String descricao;
-    private Double price;
+    private BigDecimal price;
     private String imgUrl;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") // armazena data no utc
     private Instant date;
@@ -33,7 +34,7 @@ public class Produto implements Serializable {
     public Produto() {
     }
 
-    public Produto(Long id, String nome, String descricao, Double price, String imgUrl, Instant date) {
+    public Produto(Long id, String nome, String descricao, BigDecimal price, String imgUrl, Instant date) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -66,11 +67,11 @@ public class Produto implements Serializable {
         this.descricao = descricao;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

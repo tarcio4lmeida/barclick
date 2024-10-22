@@ -1,7 +1,9 @@
 package com.tarcio4lmeida.barclick.resources;
 
 import com.tarcio4lmeida.barclick.dtos.MesaDTO;
+import com.tarcio4lmeida.barclick.dtos.PedidoDTO;
 import com.tarcio4lmeida.barclick.services.MesaService;
+import com.tarcio4lmeida.barclick.services.PedidoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MesaResource {
     private final MesaService mesaService;
+    private final PedidoService pedidoService;
 
 
     @GetMapping
@@ -41,5 +44,11 @@ public class MesaResource {
     public ResponseEntity<Void> removerMesa(@PathVariable Long id) {
         mesaService.removerMesa(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{mesaId}/pedidos")
+    public ResponseEntity<List<PedidoDTO>> getNonFinalizedPedidos(@PathVariable Long mesaId) {
+        List<PedidoDTO> pedidos = pedidoService.findNonFinalizedPedidosByMesa(mesaId);
+        return ResponseEntity.ok(pedidos);
     }
 }

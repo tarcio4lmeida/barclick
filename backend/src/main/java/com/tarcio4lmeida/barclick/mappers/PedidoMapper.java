@@ -2,6 +2,7 @@ package com.tarcio4lmeida.barclick.mappers;
 
 import com.tarcio4lmeida.barclick.dtos.ItemPedidoDTO;
 import com.tarcio4lmeida.barclick.dtos.PedidoDTO;
+import com.tarcio4lmeida.barclick.dtos.ProdutoDTO;
 import com.tarcio4lmeida.barclick.entities.ItemPedido;
 import com.tarcio4lmeida.barclick.entities.Pedido;
 import org.mapstruct.Mapper;
@@ -22,7 +23,16 @@ public interface PedidoMapper {
         List<ItemPedido> itens = pedido.getItens();
         for (ItemPedido item: itens){
             ItemPedidoDTO itemPedidoDTO = new ItemPedidoDTO();
-            itemPedidoDTO.setProdutoId(item.getProduto().getId());
+            ProdutoDTO produtoDTO = new ProdutoDTO();
+
+            produtoDTO.setId(item.getProduto().getId());
+            produtoDTO.setNome(item.getProduto().getNome());
+            produtoDTO.setDescricao(item.getProduto().getDescricao());
+            produtoDTO.setPrice(item.getProduto().getPrice());
+            produtoDTO.setImgUrl(item.getProduto().getImgUrl());
+            produtoDTO.setDate(item.getProduto().getDate());
+
+            itemPedidoDTO.setProduto(produtoDTO);
             itemPedidoDTO.setQuantidade(item.getQuantidade());
             pedidoDTO.getItens().add(itemPedidoDTO);
         }
