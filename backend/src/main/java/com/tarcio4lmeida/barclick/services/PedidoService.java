@@ -99,7 +99,7 @@ public class PedidoService {
     private BigDecimal calcularTotal(Pedido pedido) {
         return pedido.getItens().stream()
                 .map(item -> item.getPreco().multiply(BigDecimal.valueOf(item.getQuantidade())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, RoundingMode.UP);
     }
     public void delete(Long id) {
         try {
@@ -118,7 +118,7 @@ public class PedidoService {
     }
 
     private BigDecimal convertItemsDtoToEntitiesAndGetTotal(CriarAtualizarPedidoDTO dto, Pedido pedido) {
-        BigDecimal total = BigDecimal.ZERO;  // Inicia o total em 0
+        BigDecimal total = BigDecimal.ZERO;
         for (ItemPedidoDTO itemDto : dto.getItens()) {
             Produto produto = produtoRepository.getReferenceById(itemDto.getProduto().getId());
 
