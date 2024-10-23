@@ -33,5 +33,10 @@ public class PedidoResource {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}/entregar")
+    public ResponseEntity<PedidoDTO> marcarComoEntregue(@PathVariable Long id) {
+        PedidoDTO pedidoAtualizado = pedidoService.marcarComoEntregue(id);
+        return ResponseEntity.ok(pedidoAtualizado);
+    }
 
 }

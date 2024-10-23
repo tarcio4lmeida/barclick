@@ -13,12 +13,11 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/mesas")
 @RequiredArgsConstructor
+@RequestMapping("/mesas")
 public class MesaResource {
     private final MesaService mesaService;
     private final PedidoService pedidoService;
-
 
     @GetMapping
     public List<MesaDTO> listarMesas() {

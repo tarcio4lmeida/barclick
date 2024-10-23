@@ -12,6 +12,7 @@ import com.tarcio4lmeida.barclick.services.exceptions.DatabaseException;
 import com.tarcio4lmeida.barclick.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PedidoService {
@@ -34,7 +36,9 @@ public class PedidoService {
     @Transactional
     public PedidoDTO criarPedido(CriarAtualizarPedidoDTO pedidoDto) {
         Pedido pedido = new Pedido();
-        pedido.setMesa(mesaRepository.getReferenceById(pedidoDto.getMesaId()));
+        Mesa mesa = mesaRepository.getReferenceById(pedidoDto.getMesaId());
+        mesa.setDisponivel(false);
+        pedido.setMesa(mesa);
         pedido.setStatus(StatusPedido.PENDENTE);
         pedido.setData(Instant.now());
 
@@ -43,6 +47,7 @@ public class PedidoService {
         pedido.setTotal(total);
         pedido = pedidoRepository.save(pedido);
 
+        log.info("Pedido {} criado com sucesso ", pedido.getId());
         return pedidoMapper.toDto(pedido);
     }
 
@@ -115,6 +120,31 @@ public class PedidoService {
     public List<PedidoDTO> findNonFinalizedPedidosByMesa(Long mesaId) {
         List<Pedido> pedidos = pedidoRepository.findByMesaAndStatusNotFinalizado(mesaId);
         return pedidos.stream().map(pedidoMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public PedidoDTO marcarComoEntregue(Long id) {
+        try {
+            // Buscar o pedido pelo ID
+            Pedido pedido = pedidoRepository.getReferenceById(id);
+
+            // Verificar se o status atual é PENDENTE
+            if (pedido.getStatus() != StatusPedido.PENDENTE) {
+                throw new IllegalStateException("O pedido já foi entregue ou está finalizado.");
+            }
+
+            // Atualizar o status para ENTREGUE
+            pedido.setStatus(StatusPedido.ENTREGUE);
+
+            // Salvar a atualização no banco
+            Pedido pedidoAtualizado = pedidoRepository.save(pedido);
+
+            // Retornar o DTO atualizado
+            return pedidoMapper.toDto(pedidoAtualizado);
+
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Pedido não encontrado para o id " + id);
+        }
     }
 
     private BigDecimal convertItemsDtoToEntitiesAndGetTotal(CriarAtualizarPedidoDTO dto, Pedido pedido) {

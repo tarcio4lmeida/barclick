@@ -67,7 +67,7 @@ INSERT INTO tb_produto_categoria (produto_id, categoria_id) VALUES (16, 4);
 INSERT INTO tb_produto (nome, price, date, descricao, img_url) VALUES ('Gin Tônica', 31.90, NOW(), 'Gin nacional, água tônica e especiarias', 'https://raw.githubusercontent.com/tarcio4lmeida/barclick/refs/heads/main/imagens/17.jpg');
 INSERT INTO tb_produto (nome, price, date, descricao, img_url) VALUES ('Caipirinha', 14.00, NOW(), 'Copo 300ml', 'https://raw.githubusercontent.com/tarcio4lmeida/barclick/refs/heads/main/imagens/18.jpg');
 INSERT INTO tb_produto (nome, price, date, descricao, img_url) VALUES ('Whisky', 18.00, NOW(), 'Dose 50ml', 'https://raw.githubusercontent.com/tarcio4lmeida/barclick/refs/heads/main/imagens/19.jpg');
-INSERT INTO tb_produto (nome, price, date, descricao, img_url) VALUES ('Cerveja Artesanal', 12.90, NOW(), 'https://raw.githubusercontent.com/tarcio4lmeida/barclick/refs/heads/main/imagens/20.jpg');
+INSERT INTO tb_produto (nome, price, date, descricao, img_url) VALUES ('Cerveja Artesanal', 12.90, NOW(), 'Copo 300ml','https://raw.githubusercontent.com/tarcio4lmeida/barclick/refs/heads/main/imagens/20.jpg');
 --
 INSERT INTO tb_produto_categoria (produto_id, categoria_id) VALUES (17, 4);
 INSERT INTO tb_produto_categoria (produto_id, categoria_id) VALUES (18, 4);
@@ -76,10 +76,13 @@ INSERT INTO tb_produto_categoria (produto_id, categoria_id) VALUES (20, 4);
 --
 INSERT INTO tb_pedido (data, status, mesa_id, total) VALUES  (NOW(), 'PENDENTE', 1, 76.70);
 INSERT INTO tb_pedido (data, status, mesa_id, total) VALUES  (NOW(), 'PENDENTE', 1, 19.90);
-INSERT INTO tb_pedido (data, status, mesa_id, total) VALUES  (NOW(), 'FINALIZADO', 1, 64.50);
+INSERT INTO tb_pedido (data, status, mesa_id, total) VALUES  (NOW(), 'FINALIZADO', 1, 38.90);
 --
-INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade, preco) VALUES (1, 17, 2, 63.8), (1, 20, 1, 12.90);
---
+INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade, preco) VALUES (1, 17, 2, 31.90);
+INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade, preco) VALUES (1, 20, 1, 12.90);
 INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade, preco) VALUES (2, 5, 1, 19.90);
+INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade, preco) VALUES (3, 10, 1, 38.90);
+
+
 
 
