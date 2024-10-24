@@ -4,6 +4,7 @@ import com.tarcio4lmeida.barclick.dtos.MesaDTO;
 import com.tarcio4lmeida.barclick.dtos.PedidoDTO;
 import com.tarcio4lmeida.barclick.services.MesaService;
 import com.tarcio4lmeida.barclick.services.PedidoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class MesaResource {
     }
 
     @PostMapping
-    public ResponseEntity<MesaDTO> criarMesa(@RequestBody MesaDTO mesaDTO) {
+    public ResponseEntity<MesaDTO> criarMesa(@Valid @RequestBody MesaDTO mesaDTO) {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(mesaDTO.getId()).toUri();
 
@@ -34,7 +35,7 @@ public class MesaResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MesaDTO> atualizarMesa(@PathVariable Long id, @RequestBody MesaDTO mesaDTO) {
+    public ResponseEntity<MesaDTO> atualizarMesa(@Valid @PathVariable Long id, @RequestBody MesaDTO mesaDTO) {
         MesaDTO mesaAtualizada = mesaService.atualizarMesa(id, mesaDTO);
         return ResponseEntity.ok(mesaAtualizada);
     }

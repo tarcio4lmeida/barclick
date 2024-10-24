@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 @Table(name = "tb_categoria")
 public class Categoria implements Serializable {
-    // Serializable -> converter o objeto em bytes para poder trafegar na rede
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

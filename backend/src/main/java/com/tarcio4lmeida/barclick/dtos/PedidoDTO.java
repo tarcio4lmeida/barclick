@@ -12,6 +12,7 @@ public class PedidoDTO {
     private List<ItemPedidoDTO> itens = new ArrayList<>();
     private BigDecimal total;
     private String status;
+    private String descricao;
     private Instant dataCriacao;
 
     public PedidoDTO() {
@@ -55,6 +56,14 @@ public class PedidoDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public Instant getDataCriacao() {

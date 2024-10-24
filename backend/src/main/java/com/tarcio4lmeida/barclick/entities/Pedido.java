@@ -19,12 +19,12 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
 
+    @Column(columnDefinition = "TEXT")
+    private String descricao;
     @ManyToOne
     @JoinColumn(name = "mesa_id")
     private Mesa mesa;
-
     private BigDecimal total;
-
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens = new ArrayList<>();
 
@@ -70,5 +70,13 @@ public class Pedido {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

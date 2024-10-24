@@ -7,6 +7,8 @@ public class CriarAtualizarPedidoDTO {
     private Long mesaId;
     private List<ItemPedidoDTO> itens;
 
+    private String descricao;
+
     // Getters and Setters
     public Long getMesaId() {
         return mesaId;
@@ -22,5 +24,13 @@ public class CriarAtualizarPedidoDTO {
 
     public void setItens(List<ItemPedidoDTO> itens) {
         this.itens = itens;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

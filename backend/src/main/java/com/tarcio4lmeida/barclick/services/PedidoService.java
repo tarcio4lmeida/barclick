@@ -39,6 +39,7 @@ public class PedidoService {
         Mesa mesa = mesaRepository.getReferenceById(pedidoDto.getMesaId());
         mesa.setDisponivel(false);
         pedido.setMesa(mesa);
+        pedido.setDescricao(pedidoDto.getDescricao());
         pedido.setStatus(StatusPedido.PENDENTE);
         pedido.setData(Instant.now());
 
@@ -58,7 +59,7 @@ public class PedidoService {
 
             Mesa mesaAtualizada = mesaRepository.getReferenceById(dto.getMesaId());
             pedido.setMesa(mesaAtualizada);
-
+            pedido.setDescricao(dto.getDescricao());
             atualizarItensDoPedido(pedido, dto.getItens());
 
             BigDecimal total = calcularTotal(pedido);

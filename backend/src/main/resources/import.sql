@@ -74,9 +74,9 @@ INSERT INTO tb_produto_categoria (produto_id, categoria_id) VALUES (18, 4);
 INSERT INTO tb_produto_categoria (produto_id, categoria_id) VALUES (19, 4);
 INSERT INTO tb_produto_categoria (produto_id, categoria_id) VALUES (20, 4);
 --
-INSERT INTO tb_pedido (data, status, mesa_id, total) VALUES  (NOW(), 'PENDENTE', 1, 76.70);
-INSERT INTO tb_pedido (data, status, mesa_id, total) VALUES  (NOW(), 'PENDENTE', 1, 19.90);
-INSERT INTO tb_pedido (data, status, mesa_id, total) VALUES  (NOW(), 'FINALIZADO', 1, 38.90);
+INSERT INTO tb_pedido (data, status, mesa_id, total, descricao) VALUES  (NOW(), 'PENDENTE', 1, 76.70, 'Teste descricao');
+INSERT INTO tb_pedido (data, status, mesa_id, total, descricao) VALUES  (NOW(), 'PENDENTE', 1, 19.90, 'Teste descricao');
+INSERT INTO tb_pedido (data, status, mesa_id, total, descricao) VALUES  (NOW(), 'FINALIZADO', 1, 38.90, 'Teste descricao');
 --
 INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade, preco) VALUES (1, 17, 2, 31.90);
 INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade, preco) VALUES (1, 20, 1, 12.90);

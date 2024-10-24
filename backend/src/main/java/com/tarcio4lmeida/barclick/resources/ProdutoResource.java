@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -34,16 +35,19 @@ public class ProdutoResource {
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoDTO> insert(@Valid @RequestBody ProdutoDTO dto) {
+    public ResponseEntity<ProdutoDTO> insert(@Valid @RequestPart("produto") ProdutoDTO dto,
+                                             @RequestPart(value = "file", required = false) MultipartFile file) {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
-        dto = service.insert(dto);
+        dto = service.insert(dto, file);
         return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProdutoDTO> update(@Valid @PathVariable Long id, @RequestBody ProdutoDTO dto) {
-        ProdutoDTO produtoDTO = service.update(id, dto);
+    public ResponseEntity<ProdutoDTO> update(@PathVariable Long id,
+                                             @Valid @RequestPart("produto") ProdutoDTO dto,
+                                             @RequestPart(value = "file", required = false) MultipartFile file) {
+        ProdutoDTO produtoDTO = service.update(id, dto, file);
         return ResponseEntity.ok(produtoDTO);
     }
 
